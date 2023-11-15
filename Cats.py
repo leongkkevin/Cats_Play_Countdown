@@ -9,7 +9,7 @@ def numbersRound():
     smallArr = []
     largeArr = []
     
-    while(len(smallArr) + len(largeArr) < 6):
+    while(len(smallArr) + len(largeArr) < spaces):
         # Get num Small numbers
         while(True):
             print('How many small numbers would you like?')
@@ -17,7 +17,7 @@ def numbersRound():
             print('You picked ' + numSmall + ' small numbers!')
             numSmall = int(numSmall)
 
-            if(numSmall > 6 or len(smallArr) + len(largeArr) + numSmall > 6):
+            if(numSmall > spaces or len(smallArr) + len(largeArr) + numSmall > spaces):
                 print('Too many! Try again')
                 continue
             else:
@@ -29,7 +29,7 @@ def numbersRound():
             smallArr.append(randomSmall)
         
         # Check to see if it is done (all spaces filled)
-        if(len(smallArr) + len(largeArr) >=6 ):
+        if(len(smallArr) + len(largeArr) >= spaces ):
             break
 
         # Get num Large numbers
@@ -39,7 +39,7 @@ def numbersRound():
             print('You picked ' + numLarge + ' large numbers!')
             numLarge = int(numLarge)
 
-            if(numLarge > 6 or len(smallArr) + len(largeArr) + numLarge > 6):
+            if(numLarge > spaces or len(smallArr) + len(largeArr) + numLarge > spaces):
                 print('Too many! Try again')
                 continue
             else:
@@ -69,13 +69,82 @@ def numbersRound():
         # https://stackoverflow.com/questions/48655612/find-all-numbers-that-sum-closest-to-a-given-number-python
     
 
-
-    #OR... work on letters round using ASCII
 def lettersRound():
     print('LET')
     spaces = 9
-    string.ascii_letters
-    print(random.choice(string.ascii_uppercase))
+
+    consonants = []
+    vowels = []
+
+    possibleVowels = ['A', 'E', 'I', 'O', 'U']
+
+    while(len(consonants) + len(vowels) < spaces):
+        # Get num consonants
+        while(True):
+            print('How many consonants would you like?')
+            numCons = input()
+            print('You picked ' + numCons + ' consonants!')
+            numCons = int(numCons)
+
+            if(numCons >= spaces or len(consonants) + len(vowels) + numCons > spaces):
+                print('Too many! Try again')
+                continue
+            else:
+                break
+
+        # For loop to select
+        for x in range(int(numCons)):
+            choiceLetter = random.choice(string.ascii_uppercase)
+            while choiceLetter in possibleVowels:
+                choiceLetter = random.choice(string.ascii_uppercase)
+                continue
+            consonants.append(choiceLetter)
+        
+        # Check to see if it is done (all spaces filled)
+        if(len(consonants) + len(vowels) >= spaces ):
+            break
+
+        # Get num vowels
+        while(True):
+            print('How many vowels would you like?')
+            numVow = input()
+            print('You picked ' + numVow + ' vowels!')
+            numVow = int(numVow)
+
+            if(numVow >= spaces or len(consonants) + len(vowels) + numVow > spaces):
+                print('Too many! Try again')
+                continue
+            else:
+                break
+
+        # For loop to select
+        for x in range(int(numVow)):
+            choiceLetter = possibleVowels[random.randint(0, 4)]
+            vowels.append(choiceLetter)
+
+    totalSelections = consonants + vowels
+    print(totalSelections)
+
+# TEST WORD FINDER
+def charCount(word):
+    dict = {}
+    for i in word:
+        dict[i] = dict.get(i, 0) + 1
+    return dict
+ 
+ 
+def possible_words(lwords, charSet):
+    for word in lwords:
+        flag = 1
+        chars = charCount(word)
+        for key in chars:
+            if key not in charSet:
+                flag = 0
+            else:
+                if charSet.count(key) != chars[key]:
+                    flag = 0
+        if flag == 1:
+            print(word)
 
 
 def play():
