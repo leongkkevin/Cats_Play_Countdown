@@ -1,6 +1,7 @@
 import random
 import string
 
+word_dict = []
 def numbersRound():
     print("It's time for a NUMBERS ROUND!")
     spaces = 6
@@ -67,7 +68,14 @@ def numbersRound():
     # Do a TIMER
     # Find the best algo to brute force the solution
         # https://stackoverflow.com/questions/48655612/find-all-numbers-that-sum-closest-to-a-given-number-python
-    
+
+def makeDict():
+    f = open("words_alpha.txt","r")
+    word = f.readline()
+    for word in f:
+        word_dict.append(word)
+        word = f.readline
+    f.close()
 
 def lettersRound():
     print('LET')
@@ -122,34 +130,23 @@ def lettersRound():
             choiceLetter = possibleVowels[random.randint(0, 4)]
             vowels.append(choiceLetter)
 
+        # Check to see if it is done (all spaces filled)
+        if((len(consonants) + len(vowels)) >= spaces ):
+            break
+
     totalSelections = consonants + vowels
     print(totalSelections)
 
-# TEST WORD FINDER
-def charCount(word):
-    dict = {}
-    for i in word:
-        dict[i] = dict.get(i, 0) + 1
-    return dict
- 
- 
-def possible_words(lwords, charSet):
-    for word in lwords:
-        flag = 1
-        chars = charCount(word)
-        for key in chars:
-            if key not in charSet:
-                flag = 0
-            else:
-                if charSet.count(key) != chars[key]:
-                    flag = 0
-        if flag == 1:
-            print(word)
+    print("Solving...")
+    
 
 
 def play():
     print('PlayTime')
+
     #numbersRound()
+
+    makeDict()
     lettersRound()
 
 
