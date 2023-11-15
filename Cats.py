@@ -1,4 +1,5 @@
 import random
+import string
 
 def numbersRound():
     print("It's time for a NUMBERS ROUND!")
@@ -63,18 +64,24 @@ def numbersRound():
     print(goalNum)
 
 
-
+    # Do a TIMER
+    # Find the best algo to brute force the solution
+        # https://stackoverflow.com/questions/48655612/find-all-numbers-that-sum-closest-to-a-given-number-python
     
 
 
-
+    #OR... work on letters round using ASCII
 def lettersRound():
     print('LET')
     spaces = 9
+    string.ascii_letters
+    print(random.choice(string.ascii_uppercase))
+
 
 def play():
     print('PlayTime')
-    numbersRound()
+    #numbersRound()
+    lettersRound()
 
 
 play()
