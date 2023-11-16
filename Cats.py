@@ -1,5 +1,6 @@
 import random
 import string
+from itertools import permutations
 
 word_dict = []
 def numbersRound():
@@ -77,6 +78,11 @@ def makeDict():
         word = f.readline
     f.close()
 
+def solveWordGame(dictionary, letters):
+    print("Solving...")
+    test = list(permutations(letters))
+    print(test)
+
 def lettersRound():
     print('LET')
     spaces = 9
@@ -137,7 +143,7 @@ def lettersRound():
     totalSelections = consonants + vowels
     print(totalSelections)
 
-    print("Solving...")
+    solveWordGame(word_dict, totalSelections)
     
 
 
