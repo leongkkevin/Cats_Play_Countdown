@@ -1,8 +1,8 @@
 import random
 import string
-from itertools import permutations
+from itertools import permutations, chain, combinations
 
-word_dict = []
+word_dict = set()
 def numbersRound():
     print("It's time for a NUMBERS ROUND!")
     spaces = 6
@@ -72,19 +72,26 @@ def numbersRound():
 
 def makeDict():
     f = open("words_alpha.txt","r")
-    word = f.readline()
     for word in f:
-        word_dict.append(word)
-        word = f.readline
+        word = word[:-1]
+        word_dict.add(word)
+        word = f.readline()
     f.close()
 
-def solveWordGame(dictionary, letters):
-    print("Solving...")
-    test = list(permutations(letters))
-    print(test)
+def solveWordGame(dictionary, letters, solutions):
+    letterPerm = list(permutations(letters))
+    for perm in letterPerm:
+        permWord = ""
+        permWord = permWord.join(perm).lower()
+        if permWord in dictionary:
+            if permWord not in solutions:
+                solutions.append(permWord)
+                print("Found " + str(len(solutions)) + ' solutions so far!')
 
 def lettersRound():
-    print('LET')
+    print('LETTERS ROUND')
+
+    #default is 9 spaces
     spaces = 9
 
     consonants = []
@@ -141,10 +148,16 @@ def lettersRound():
             break
 
     totalSelections = consonants + vowels
+    print("Your selections are...")
     print(totalSelections)
 
-    solveWordGame(word_dict, totalSelections)
+    print("Solving...")
+    solutions = []
+    letter_sets = list(chain.from_iterable(combinations(totalSelections, r) for r in range(1, len(totalSelections)+1)))
+    for set in letter_sets:
+        solveWordGame(word_dict, set, solutions)
     
+    print(solutions)
 
 
 def play():
