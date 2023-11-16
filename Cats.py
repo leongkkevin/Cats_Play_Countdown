@@ -1,8 +1,21 @@
 import random
 import string
-from itertools import permutations, chain, combinations
+from itertools import permutations, chain, combinations, product
 
 word_dict = set()
+
+def solveNumbersGame(goal, selection):
+    operations = ["A", "S", "M", "D"]
+    operationsPerm = list(product(operations, repeat=4))
+
+    selectionPerm = list(permutations(selection))
+    print(selectionPerm)
+    
+    for opList in operationsPerm:
+        for selectionList in selectionPerm:
+            answer = 0
+            answer = answer + selectionList[0]
+
 def numbersRound():
     print("It's time for a NUMBERS ROUND!")
     spaces = 6
@@ -64,6 +77,8 @@ def numbersRound():
     print("Now... let's take a look at the number to generate...")
     goalNum = random.randint(100, 999)
     print(goalNum)
+
+    solveNumbersGame(goalNum, totalSelections)
 
 
     # Do a TIMER
@@ -163,10 +178,10 @@ def lettersRound():
 def play():
     print('PlayTime')
 
-    #numbersRound()
+    numbersRound()
 
-    makeDict()
-    lettersRound()
+    #makeDict()
+    #lettersRound()
 
 
 play()
