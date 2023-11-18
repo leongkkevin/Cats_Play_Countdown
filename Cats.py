@@ -4,17 +4,52 @@ from itertools import permutations, chain, combinations, product
 
 word_dict = set()
 
+winningNums = []
+winningOps = []
 def solveNumbersGame(goal, selection):
     operations = ["A", "S", "M", "D"]
-    operationsPerm = list(product(operations, repeat=4))
+    operationsPerm = list(product(operations, repeat=5))
 
-    selectionPerm = list(permutations(selection))
-    print(selectionPerm)
-    
+    selectionPerm = list(permutations(selection)) 
+
     for opList in operationsPerm:
+
         for selectionList in selectionPerm:
-            answer = 0
-            answer = answer + selectionList[0]
+
+            answer = selectionList[0]
+
+            for num in range(len(selectionList) - 1):
+                if opList[num] == 'A':
+                    answer = answer + selectionList[num + 1]
+                if opList[num] == 'S':
+                    answer = answer - selectionList[num + 1]
+                if opList[num] == 'M':
+                    answer = answer * selectionList[num + 1]
+                if opList[num] == 'D':
+                    if selectionList[num + 1] == 0:
+                        break
+                    else:
+                        answer = answer / selectionList[num + 1]
+            if answer == goal:
+                winningNums.append(selectionList)
+                winningOps.append(opList)
+
+    if len(winningNums) == 0 and len(winningOps) == 0:
+        print("THERE ARE NO RESULTS!")
+    else:
+        print("HERE ARE THE WINNING SOLUTIONS: ")
+        opsDict = {
+                    "A": " + ",
+                    "S": " - ",
+                    "M": " x ",
+                    "D": " / "
+                    }
+        for x in range(len(winningNums)):
+            winningEx = str(winningNums[x][0])
+            for y in range(len(winningNums[x]) - 1):
+                winningEx = winningEx + opsDict[winningOps[x][y]] + str(winningNums[x][y + 1]) + ','
+            winningEx = winningEx + ' = ' + str(goal)
+            print(winningEx)
 
 def numbersRound():
     print("It's time for a NUMBERS ROUND!")
@@ -47,6 +82,9 @@ def numbersRound():
         if(len(smallArr) + len(largeArr) >= spaces ):
             break
 
+        spaceLeft = spaces - len(smallArr) - len(largeArr)
+        print("You have " + str(spaceLeft) + " numbers left!")
+
         # Get num Large numbers
         while(True):
             print('How many large numbers would you like?')
@@ -65,6 +103,9 @@ def numbersRound():
             index = random.randint(0, 4)
             randomLarge = possibleLarge[index]
             largeArr.append(randomLarge)
+        
+        spaceLeft = spaces - len(smallArr) - len(largeArr)
+        print("You have " + str(spaceLeft) + " numbers left!")
     
     totalSelections = smallArr + largeArr
     if(len(totalSelections) > spaces):
@@ -85,12 +126,12 @@ def numbersRound():
     # Find the best algo to brute force the solution
         # https://stackoverflow.com/questions/48655612/find-all-numbers-that-sum-closest-to-a-given-number-python
 
-def makeDict():
+def makeDict(length):
     f = open("words_alpha.txt","r")
     for word in f:
         word = word[:-1]
-        word_dict.add(word)
-        word = f.readline()
+        if(len(word) <= length):
+            word_dict.add(word)
     f.close()
 
 def solveWordGame(dictionary, letters, solutions):
@@ -104,10 +145,14 @@ def solveWordGame(dictionary, letters, solutions):
                 print("Found " + str(len(solutions)) + ' solutions so far!')
 
 def lettersRound():
-    print('LETTERS ROUND')
+    print("It's time for a LETTERS ROUND")
 
     #default is 9 spaces
     spaces = 9
+
+    print("You have " + str(spaces) + " spaces!")
+
+    makeDict(spaces)
 
     consonants = []
     vowels = []
@@ -140,6 +185,9 @@ def lettersRound():
         if(len(consonants) + len(vowels) >= spaces ):
             break
 
+        spaceLeft = spaces - len(vowels) - len(consonants)
+        print("You have " + str(spaceLeft) + " numbers left!")
+
         # Get num vowels
         while(True):
             print('How many vowels would you like?')
@@ -162,6 +210,9 @@ def lettersRound():
         if((len(consonants) + len(vowels)) >= spaces ):
             break
 
+        spaceLeft = spaces - len(vowels) - len(consonants)
+        print("You have " + str(spaceLeft) + " numbers left!")
+
     totalSelections = consonants + vowels
     print("Your selections are...")
     print(totalSelections)
@@ -176,12 +227,29 @@ def lettersRound():
 
 
 def play():
-    print('PlayTime')
+    print("LET'S PLAY COUNTDOWN!")
+    playing = True
 
-    numbersRound()
+    while playing:
+        print("=====================")
+        print("Choose from this menu: ")
+        print("1: Numbers Round")
+        print("2: Letters Round")
+        print("3: Solve Letters Round")
+        print("4: Solve Numbers Round")
+        print("5: Quit")
 
-    #makeDict()
-    #lettersRound()
+        selection = input()
+
+        if selection == '1':
+            numbersRound()
+        elif selection == '2':
+            lettersRound()
+        elif selection == '5':
+            break
+        else:
+            print("Bad selection! Try again!")
+            continue
 
 
 play()
