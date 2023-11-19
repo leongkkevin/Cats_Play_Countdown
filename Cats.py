@@ -7,6 +7,7 @@ word_dict = set()
 winningNums = []
 winningOps = []
 def solveNumbersGame(goal, selection):
+    winningSolutionsFull = set()
     operations = ["A", "S", "M", "D"]
     operationsPerm = list(product(operations, repeat=5))
 
@@ -49,7 +50,9 @@ def solveNumbersGame(goal, selection):
             for y in range(len(winningNums[x]) - 1):
                 winningEx = winningEx + opsDict[winningOps[x][y]] + str(winningNums[x][y + 1]) + ','
             winningEx = winningEx + ' = ' + str(goal)
-            print(winningEx)
+            winningSolutionsFull.add(winningEx)
+            #print(winningEx)
+    print(winningSolutionsFull)
 
 def numbersRound():
     print("It's time for a NUMBERS ROUND!")
@@ -225,6 +228,50 @@ def lettersRound():
     
     print(solutions)
 
+def solveLetters():
+    letters = []
+    print("How many letters will you enter?", end=" ")
+    numLetters = input()
+
+    makeDict(int(numLetters))
+
+    for x in range(int(numLetters)):
+        print("Enter the " + str(x+1) + " letter:", end=" ")
+        letterIn = input()
+        letters.append(letterIn)
+
+    solutions = []
+    print("You entered: ")
+    print(letters)
+
+    print("Solving...")
+    letter_sets = list(chain.from_iterable(combinations(letters, r) for r in range(1, len(letters)+1)))
+    for set in letter_sets:
+        solveWordGame(word_dict, set, solutions)
+    
+    print(solutions)
+
+def solveNumbers():
+    numbers = []
+    print("How many numbers will you enter?", end=" ")
+    numNumbers = input()
+
+    makeDict(int(numNumbers))
+
+    for x in range(int(numNumbers)):
+        print("Enter the " + str(x+1) + " number:", end=" ")
+        numberIn = int(input())
+        numbers.append(numberIn)
+
+    print("You entered: ")
+    print(numbers)
+
+    print("What number are we solving to?", end=" ")
+    goalNum = int(input())
+
+    print("Solving...")
+    solveNumbersGame(goalNum, numbers)
+
 
 def play():
     print("LET'S PLAY COUNTDOWN!")
@@ -238,6 +285,7 @@ def play():
         print("3: Solve Letters Round")
         print("4: Solve Numbers Round")
         print("5: Quit")
+        print("INPUT: ", end="")
 
         selection = input()
 
@@ -245,6 +293,10 @@ def play():
             numbersRound()
         elif selection == '2':
             lettersRound()
+        elif selection == '3':
+            solveLetters()
+        elif selection == '4':
+            solveNumbers()
         elif selection == '5':
             break
         else:
