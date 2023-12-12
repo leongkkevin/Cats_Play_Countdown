@@ -1,6 +1,21 @@
 import random
 import string
 from itertools import permutations, chain, combinations, product
+import time
+import sys
+
+# ================ CHANGE SETTINGS HERE ====================
+timer_time = 60
+
+def print_solutions(solutions):
+    time.sleep(1)
+    print("There are " + str(len(solutions)) + " solutions!")
+    time.sleep(3)
+    print("Here they are: ")
+    numSt = 1
+    for statement in solutions:
+        print(str(numSt) + ") " + statement)
+        numSt += 1
 
 word_dict = set()
 
@@ -38,7 +53,6 @@ def solveNumbersGame(goal, selection):
     if len(winningNums) == 0 and len(winningOps) == 0:
         print("THERE ARE NO RESULTS!")
     else:
-        print("HERE ARE THE WINNING SOLUTIONS: ")
         opsDict = {
                     "A": " + ",
                     "S": " - ",
@@ -51,12 +65,12 @@ def solveNumbersGame(goal, selection):
                 winningEx = winningEx + opsDict[winningOps[x][y]] + str(winningNums[x][y + 1]) + ','
             winningEx = winningEx + ' = ' + str(goal)
             winningSolutionsFull.add(winningEx)
-            #print(winningEx)
-    print(winningSolutionsFull)
+    print_solutions(winningSolutionsFull)
 
 def numbersRound():
     print("It's time for a NUMBERS ROUND!")
     spaces = 6
+    print("You have " + str(spaces) + " numbers to choose from!")
     possibleLarge = [50, 25, 10, 75, 100]
 
     smallArr = []
@@ -122,6 +136,14 @@ def numbersRound():
     goalNum = random.randint(100, 999)
     print(goalNum)
 
+    print("YOU HAVE 60 SECONDS!")
+
+    for i in range(timer_time,0,-1):
+        sys.stdout.write(str(i)+' ')
+        sys.stdout.flush()
+        time.sleep(1)
+
+    print("\nTIME IS UP!!! Let's solve...")
     solveNumbersGame(goalNum, totalSelections)
 
 
@@ -145,7 +167,7 @@ def solveWordGame(dictionary, letters, solutions):
         if permWord in dictionary:
             if permWord not in solutions:
                 solutions.append(permWord)
-                print("Found " + str(len(solutions)) + ' solutions so far!')
+                #print("Found " + str(len(solutions)) + ' solutions so far!')
 
 def lettersRound():
     print("It's time for a LETTERS ROUND")
@@ -220,13 +242,22 @@ def lettersRound():
     print("Your selections are...")
     print(totalSelections)
 
+    print("YOU HAVE 60 SECONDS!")
+
+    for i in range(timer_time,0,-1):
+        sys.stdout.write(str(i)+' ')
+        sys.stdout.flush()
+        time.sleep(1)
+
+    print("\nTIME IS UP!!! Let's solve...")
+
     print("Solving...")
     solutions = []
     letter_sets = list(chain.from_iterable(combinations(totalSelections, r) for r in range(1, len(totalSelections)+1)))
     for set in letter_sets:
         solveWordGame(word_dict, set, solutions)
     
-    print(solutions)
+    print_solutions(solutions)
 
 def solveLetters():
     letters = []
@@ -249,7 +280,7 @@ def solveLetters():
     for set in letter_sets:
         solveWordGame(word_dict, set, solutions)
     
-    print(solutions)
+    print_solutions(solutions)
 
 def solveNumbers():
     numbers = []
